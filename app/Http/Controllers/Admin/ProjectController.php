@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ProjectController extends Controller
 {
@@ -13,9 +14,15 @@ class ProjectController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $projects = Project::all();
+        if($request->has('term')){
+            $term = $request->get('term');
+            $projects = Project::where('title', 'LIKE', "%$term%")->paginate(10)->withQueryString();
+        } else {
+            $projects = Project::paginate(10);
+        }
         return view('admin.projects.index', compact('projects'));
     }
 
@@ -26,7 +33,7 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.projects.create');
     }
 
     /**
@@ -37,7 +44,12 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $this->validation($request->all());
+        $project = new Project;
+        $project->fill($data);
+        $project->save();
+
+        return to_route("admin.projects.show", $project);
     }
 
     /**
@@ -59,7 +71,7 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        //
+        return view('admin.projects.edit', compact('project'));
     }
 
     /**
@@ -71,7 +83,10 @@ class ProjectController extends Controller
      */
     public function update(Request $request, Project $project)
     {
-        //
+        $data = $this->validation($request->all(), $project->id);
+
+        $project->update($data);
+        return to_route("admin.projects.show", $project);
     }
 
     /**
@@ -82,6 +97,33 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        //
+        $project->delete();
+        return to_route('admin.projects.index');
+    }
+
+    //VALIDATOR
+    private function validation($data, $id = null){
+
+        $validator= Validator::make(
+                $data,
+            [
+            'title' => 'nullable|string|max:50',
+            'thumbnail' => 'nullable|string',
+            'details' => 'nullable|string',
+
+            ],
+            [
+
+            'title.max' => 'Titolo max 50 caratteri',
+
+            'thumbnail.string' => 'Necessaria stringa',
+
+            'details.string' => 'Necessaria stringa',
+
+            ]
+        )->validate();
+
+        return $validator;
+
     }
 }

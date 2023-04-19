@@ -20,11 +20,11 @@ class ProjectSeeder extends Seeder
     {
         for($i = 0; $i < 40; $i++) {
             $project = new Project;
-            $project->title = $faker-> catchPhrase();
+            $project->title = $faker-> catchPhrase(30);
             $project->slug = Str::of($project->title)->slug('-');
-            $project->image = $faker;
-            $project->text = $faker;
-            $project->save;
+            $project->image = $faker->imageUrl(640, 480, 'homepage', true);
+            $project->text = $faker->paragraph(15);
+            $project->save();
         }
     }
 }

@@ -17,8 +17,8 @@ use App\Http\Controllers\Guest\HomeController as GuestHomeController;
 |
 */
 
-Route::get('/dashboard', [AdminHomeController::class, 'index'])->middleware(['auth'])->name('dashboard');
-Route::get('/', [GuestHomeController::class, 'index']);
+Route::get('/dashboard', [AdminHomeController::class, 'index'])->middleware(['auth'])->name('admin');
+Route::get('/', [GuestHomeController::class, 'index'])->name('guest');
 
 Route::middleware('auth')
 ->prefix('/admin')
