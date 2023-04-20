@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class ProjectController extends Controller
@@ -33,7 +35,8 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        return view('admin.projects.create');
+        $project = new Project;
+        return view('admin.projects.form', compact('project'));
     }
 
     /**
@@ -45,6 +48,13 @@ class ProjectController extends Controller
     public function store(Request $request)
     {
         $data = $this->validation($request->all());
+
+        if (Arr::exists($data, 'image')) {
+            $path = Storage::put('uploads/projects', $data['image']);
+            $data['image'] = $path;
+        }
+
+
         $project = new Project;
         $project->fill($data);
         $project->save();
@@ -71,7 +81,7 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        return view('admin.projects.edit', compact('project'));
+        return view('admin.projects.form', compact('project'));
     }
 
     /**
@@ -85,6 +95,12 @@ class ProjectController extends Controller
     {
         $data = $this->validation($request->all(), $project->id);
 
+        if (Arr::exists($data, 'image')) {
+            if ($project->image) Storage::delete($project->image);
+            $path = Storage::put('uploads/projects', $data['image']);
+            $data['image'] = $path;
+        }
+
         $project->update($data);
         return to_route("admin.projects.show", $project);
     }
@@ -97,6 +113,7 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
+        if ($project->image) Storage::delete($project->image);
         $project->delete();
         return to_route('admin.projects.index');
     }
@@ -108,17 +125,19 @@ class ProjectController extends Controller
                 $data,
             [
             'title' => 'nullable|string|max:50',
-            'thumbnail' => 'nullable|string',
-            'details' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpg,png,jpeg',
+            'text' => 'nullable|string',
 
             ],
             [
 
             'title.max' => 'Titolo max 50 caratteri',
 
-            'thumbnail.string' => 'Necessaria stringa',
+            'image.string' => 'Necessaria immagine',
 
-            'details.string' => 'Necessaria stringa',
+            'image.mimes' => 'Formati jpg , png e jpeg',
+
+            'text.string' => 'Necessaria stringa',
 
             ]
         )->validate();
