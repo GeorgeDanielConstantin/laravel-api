@@ -19,7 +19,7 @@
                 <th scope="col">ID</th>
                 <th scope="col">Titolo</th>
                 <th scope="col">Slug</th>
-                <th scope="col">Image</th>
+                <th scope="col">Categoria</th>
                 <th scope="col">Text</th>
             </tr>
         </thead>
@@ -29,6 +29,9 @@
                     <th scope="row">{{ $project->id }}</th>
                     <td>{{ $project->title }}</td>
                     <td>{{ $project->slug }}</td>
+                    <td>{{ $project->type?->label }}</td>
+
+
                     <td class="d-flex justify-content-between">
                         <i class="bi bi-arrow-right-circle-fill"></i>
                         <a href="{{ route('admin.projects.show', $project) }}">
