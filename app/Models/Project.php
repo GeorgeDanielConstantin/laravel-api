@@ -11,5 +11,9 @@ class Project extends Model
 
     protected $fillable = ['title', 'slug', 'image', 'text'];
 
+    public function getPlaceholder(){
+        return $this->thumbnail ? asset('storage/' . $this->thumbnail) : "https://placehold.co/600x400";
+    }
+
     
 }

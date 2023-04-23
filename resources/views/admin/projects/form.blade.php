@@ -42,9 +42,9 @@
             <div class="flex-column d-flex">
                 <label for="image" class="form-label">URL immagine di anteprima</label>
                 <input type="file" class="form-control @error('image') is-invalid @enderror" id="image" name="image">
-                    <div>
-                        <img src="{{$project->image}}" alt="" class="img-fluid">
-                    </div>
+                <div class="mt-3">
+                    <img class="w-100" src="{{$project->getPlaceholder()}}" alt="anteprima" >
+                </div>
             </div>
 
             <div class="col-5">
