@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use App\Models\Type;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -36,8 +37,8 @@ class ProjectController extends Controller
     public function create()
     {
         $project = new Project;
-        return view('admin.projects.form', compact('project'));
-    }
+        $types = Type::orderBy('label')->get();
+        return view('admin.projects.form', compact('project', 'types'));    }
 
     /**
      * Store a newly created resource in storage.
@@ -81,8 +82,9 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        return view('admin.projects.form', compact('project'));
-    }
+        $types = Type::orderBy('label')->get();
+        return view('admin.projects.form', compact('project', 'types'));
+        }
 
     /**
      * Update the specified resource in storage.
@@ -127,6 +129,7 @@ class ProjectController extends Controller
             'title' => 'nullable|string|max:50',
             'image' => 'nullable|image|mimes:jpg,png,jpeg',
             'text' => 'nullable|string',
+            'type_id' => 'nullable|exists:types,id',
 
             ],
             [
@@ -138,6 +141,8 @@ class ProjectController extends Controller
             'image.mimes' => 'Formati jpg , png e jpeg',
 
             'text.string' => 'Necessaria stringa',
+
+            'type_id.exists' => 'Id categoria non esiste',
 
             ]
         )->validate();

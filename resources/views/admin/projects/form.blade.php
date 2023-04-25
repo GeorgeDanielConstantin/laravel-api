@@ -37,6 +37,11 @@
                     
                     <label for="title" class="form-label">Titolo</label>
                     <input type="text" class="form-control" id="title" name="title" value="{{ old('name') }}" />
+                    @error('title') 
+                    <div class="invalid-feedback">
+                        {{$message}}
+                    </div>
+                    @enderror
                 </div>
             </div>
             <div class="flex-column d-flex">
@@ -48,6 +53,27 @@
             </div>
 
             <div class="col-5">
+
+            <div class="mt-1">
+                    <label for="type_id" class="form-label">Categoria</label>
+                    <select class="form-select" @error('type_id') is-invalid @enderror id="type_id" name="type_id" aria-label="Default select example">
+                       {{--  <option selected>Nessuna categoria</option> --}}
+                        <option value="">Nessuna categoria</option>
+                         
+                        @foreach($types as $type)
+                        <option @if(old('type_id') == $type->id) selected @endif value="{{ $type->id }}">{{ $type->label }}</option>
+                        @endforeach
+                        {{-- prova errore --}}
+                        {{-- <option value="10">Prova errore</option> --}}
+                     </select>
+                     @error('type_id')
+                     <div class="invalid-feedback">
+                       {{ $message }}
+                     </div>
+                     @enderror
+                        
+                    </select>
+                </div>
 
                 <div class="text">
                     <textarea class=" w-100  @error('text') is-invalid @enderror" name="text" id="text" placeholder="Descrizione">

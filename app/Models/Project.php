@@ -15,5 +15,9 @@ class Project extends Model
         return $this->thumbnail ? asset('storage/' . $this->thumbnail) : "https://placehold.co/600x400";
     }
 
+    public function type() {
+        return $this->belongsTo(Type::class);
+    }
+
     
 }
