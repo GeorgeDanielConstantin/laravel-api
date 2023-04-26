@@ -11,7 +11,7 @@
     <div class="card">
         <div class="card-body my-2">
             <h5 class="card-title my-3"><strong>Titolo:</strong> {{ $project->title }}</h5>
-            <h6 class="card-subtitle m-3"><strong> Slug:</strong> {{ $project->slug }}</h6>
+            <h6 class="card-subtitle m-3"> Slug: {{ $project->slug }}</h6>
 
             <div class="row">
                 <div class="col-6 p-0">

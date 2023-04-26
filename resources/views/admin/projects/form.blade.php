@@ -75,6 +75,28 @@
                     </select>
                 </div>
 
+                <div class="mt-1">
+                    <label for="technology_id" class="form-label">Tecnologia</label>
+                    <select class="form-select" @error('technology_id') is-invalid @enderror id="technology_id" name="technology_id" aria-label="Default select example">
+
+                        <option value="">Nessuna tecnologia</option>
+
+                        @foreach($technologies as $technology)
+                        <option @if(old('technology_id') == $technology->id) selected @endif value="{{ $technology->id }}">{{ $technology->label }}</option>
+                        @endforeach
+
+                     </select>
+
+                     @error('technology_id')
+                     <div class="invalid-feedback">
+                       {{ $message }}
+                     </div>
+                     @enderror
+
+
+                    </select>
+                </div>
+
                 <div class="text">
                     <textarea class=" w-100  @error('text') is-invalid @enderror" name="text" id="text" placeholder="Descrizione">
                         {{ old('text') ?? $project->text}}
