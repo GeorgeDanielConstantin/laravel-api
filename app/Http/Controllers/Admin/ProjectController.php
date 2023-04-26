@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use App\Models\Technology;
 use App\Models\Type;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -38,7 +39,9 @@ class ProjectController extends Controller
     {
         $project = new Project;
         $types = Type::orderBy('label')->get();
-        return view('admin.projects.form', compact('project', 'types'));    }
+        $technologies = Technology::orderBy('label')->get();
+        return view('admin.projects.form', compact('project', 'types', 'technologies'));
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -83,8 +86,9 @@ class ProjectController extends Controller
     public function edit(Project $project)
     {
         $types = Type::orderBy('label')->get();
-        return view('admin.projects.form', compact('project', 'types'));
-        }
+        $technologies = Technology::orderBy('label')->get();
+        return view('admin.projects.form', compact('project', 'types','technologies'));
+    }
 
     /**
      * Update the specified resource in storage.
@@ -130,6 +134,7 @@ class ProjectController extends Controller
             'image' => 'nullable|image|mimes:jpg,png,jpeg',
             'text' => 'nullable|string',
             'type_id' => 'nullable|exists:types,id',
+            'technology_id' => 'nullable|exists:technologies,id',
 
             ],
             [
@@ -143,6 +148,8 @@ class ProjectController extends Controller
             'text.string' => 'Necessaria stringa',
 
             'type_id.exists' => 'Id categoria non esiste',
+
+            'technology_id.exists' => 'Id tecnologia non esiste',
 
             ]
         )->validate();

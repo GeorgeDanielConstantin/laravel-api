@@ -20,6 +20,7 @@
                 <th scope="col">Titolo</th>
                 <th scope="col">Slug</th>
                 <th scope="col">Categoria</th>
+                <th scope="col">Tecnologie</th>
                 <th scope="col">Text</th>
             </tr>
         </thead>
@@ -30,6 +31,7 @@
                     <td>{{ $project->title }}</td>
                     <td>{{ $project->slug }}</td>
                     <td>{{ $project->type?->label }}</td>
+                    <td>{{ $project->technology?->label }}</td>
 
 
                     <td class="d-flex justify-content-between">
