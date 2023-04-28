@@ -9,10 +9,15 @@ class Project extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'slug', 'image', 'text'];
+    protected $fillable = ['title', 'slug', 'image', 'text', 'type_id'];
+
 
     public function getPlaceholder(){
         return $this->thumbnail ? asset('storage/' . $this->thumbnail) : "https://placehold.co/600x400";
+    }
+
+    public function getAbstract($max = 150){
+        return substr($this->details, 0, $max) . "[...]";
     }
 
     public function type() {
