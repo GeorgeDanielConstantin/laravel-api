@@ -29,7 +29,7 @@
                 <tr>
                     <th scope="row">{{ $project->id }}</th>
                     <td>{{ $project->title }}</td>
-                    <td>{{ $project->slug }}</td>
+                    <td>{{ $project->getAbstractIndex() }}</td>
                     <td>{{ $project->type?->label }}</td>
                     <td>{{ $project->technology?->label }}</td>
 

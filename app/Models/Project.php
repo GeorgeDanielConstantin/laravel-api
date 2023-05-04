@@ -20,6 +20,10 @@ class Project extends Model
         return substr($this->details, 0, $max) . "[...]";
     }
 
+    public function getAbstractIndex($max = 50){
+        return substr($this->details, 0, $max) . "...";
+    }
+
     public function type() {
         return $this->belongsTo(Type::class);
     }

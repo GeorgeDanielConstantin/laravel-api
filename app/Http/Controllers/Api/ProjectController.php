@@ -43,12 +43,13 @@ class ProjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($slug)
     {
-        $project = Project::find($id);
+        $project = Project::where ('slug', $slug)
+        ->with('technologies', 'type')->first();
         if(!$project) return response(null, 404);
 
-         return response()->json($projects);
+         return response()->json($project);
     }
 
     /**
